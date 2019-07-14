@@ -1,0 +1,75 @@
+package graph;
+
+import java.io.*;
+import java.util.*;
+
+public class ShortestPath {
+    
+    public int minDistance(int dis[],Boolean b[])
+    {
+        int min=Integer.MAX_VALUE;
+        int parent=-1;
+        
+        for(int v=0;v<9;v++)
+        {
+            if(b[v]==false && dis[v] <= min)
+            {
+                min=dis[v]; 
+                parent=v;
+            } 
+        }
+        return parent;  
+    }
+   
+    public void printAns(int dis[],int n)
+    {
+        System.out.println("The distance from source to destinatio is ");
+        for(int i=0;i<9;i++)
+        {
+            System.out.println(i+"   ----  "+dis[i]);
+        }
+    }
+    
+    public void dijkstra(int graph[][],int src)
+    {
+        int dis[]=new int[9];
+        Boolean b[]=new Boolean[9];
+        
+        for(int i=0;i<9;i++)
+        {
+            dis[i]=Integer.MAX_VALUE;
+            b[i]=false;
+        }
+        //prottek tar theke shortesr path
+        dis[src]=0;
+        for(int j=0;j<8;j++)
+        {
+            int u = minDistance(dis , b);
+            b[u]=true;
+            for(int v=0;v<9;v++)
+            {
+                if(!b[v] && graph[u][v]!=0 && dis[u]!=Integer.MAX_VALUE && dis[u]+graph[u][v]<dis[v])
+                {
+                    dis[v]=dis[u]+graph[u][v];
+                } 
+            }  
+        }
+        printAns(dis,9);
+    }
+
+        public static void main(String ar[])
+        {
+            int graph[][]=new int[][]{{0,8,4,0,0,0,0,0,0},
+                                      {8,0,11,1,0,0,0,0,7},
+                                      {4,11,0,0,8,0,0,0,0},
+                                      {0,1,0,0,0,2,0,0,6},
+                                      {0,0,8,0,0,4,7,0,2},
+                                      {0,0,0,2,4,0,14,10,0},
+                                      {0,0,0,0,7,14,0,9,0},
+                                      {0,0,0,0,0,10,9,0,0},
+                                      {0,7,0,6,2,0,0,0,0}
+            };
+            ShortestPath p = new ShortestPath();
+            p.dijkstra(graph,0);
+        }  
+}
